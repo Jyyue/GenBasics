@@ -1,0 +1,5 @@
+noise_levels: null
+sigma_max: 10
+sigma_min: 0.1
+t_dim: 16
+x_dim: 2

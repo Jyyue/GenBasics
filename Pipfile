@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+torch = "*"
+torchvision = "*"
+scikit-learn = "*"
+matplotlib = "*"
+ipykernel = "*"
+numpy = "*"
+pytorch-lightning = "*"
+lightning = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
+python_full_version = "3.10.0"
