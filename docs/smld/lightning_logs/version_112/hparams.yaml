@@ -1,4 +1,0 @@
-hidden_dim: 128
-num_scales: 10
-sigma_max: 10
-sigma_min: 0.01

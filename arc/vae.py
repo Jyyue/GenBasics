@@ -17,11 +17,14 @@ class VAE(pl.LightningModule):
         z = mu + torch.randn_like(mu)*log_sigma.exp()
         x_hat = self.decoder(z)
         RC = -torch.nn.functional.mse_loss(x_hat, x)
-        KL = torch.mean(0.5* torch.sum(-1 - log_sigma + mu ** 2 + log_sigma.exp(), dim=1), dim=0)
+        KL = torch.mean(0.5* torch.sum(-1 - log_sigma + mu ** 2 + log_sigma.exp(), dim=1), dim=0) # KL beetween two gaussian distribution
         loss = -RC + KL
         self.log("train_loss", loss)
         return loss # - log likelihood
-
+    
+    def generation(self, z):
+        x_hat = self.decoder(z)
+        return x_hat
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1e-3)

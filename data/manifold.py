@@ -25,4 +25,12 @@ class SwissRoll_DataModule:
         val_dataset = TensorDataset(val_tensor)
         return DataLoader(val_dataset, batch_size=self.batch_size, shuffle=True)
     
+    def get_normalized_train_loader(self):
+        train_data = swiss2d_data(100000)
+        train_tensor = torch.tensor(train_data)
+        self.mu = train_tensor.mean(dim=0)
+        self.sigma = train_tensor.std(dim=0)
+        train_tensor = (train_tensor - self.mu) / self.sigma
+        train_dataset = TensorDataset(train_tensor)
+        return DataLoader(train_dataset, batch_size=self.batch_size, shuffle=True)
 # TODO: support more that swiss2d ... 

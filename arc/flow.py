@@ -3,6 +3,9 @@ import torch
 import torch.nn as nn
 from MLPW.arc.utils.mlp import MLP
 
+"""
+
+"""
 class FlowOneStep(pl.LightningModule):
     def __init__(self):
         super().__init__()
@@ -48,6 +51,9 @@ class FlowOneStep(pl.LightningModule):
         x_out = torch.stack([x1, x2], dim=1)
         return x_out
 
+"""
+flow model
+"""
 class FlowOneStep_chunk(pl.LightningModule):
     def __init__(self):
         super().__init__()
@@ -55,43 +61,6 @@ class FlowOneStep_chunk(pl.LightningModule):
         self.t1 = MLP(1, 1)
         self.s2 = MLP(1, 1)
         self.t2 = MLP(1, 1)
-
-    def forward(self, x):
-        x1, x2 = x.chunk(2, dim=1)  # shape: (n, 1), (n, 1)
-
-        # Layer 1
-        s1 = self.s1(x1)
-        t1 = self.t1(x1)
-        x2 = x2 * torch.exp(s1) + t1
-        log_det = s1.sum(dim=1)
-
-        # Layer 2
-        s2 = self.s2(x2)
-        t2 = self.t2(x2)
-        x1 = x1 * torch.exp(s2) + t2
-        log_det += s2.sum(dim=1)
-        print("x1")
-        print(x1)
-        print("x2")
-        print(x2)
-        print("log")
-        print(log_det)
-        return torch.cat([x1, x2], dim=1), log_det
-
-    def inverse(self, x):
-        x1, x2 = x.chunk(2, dim=1)
-
-        # Inverse Layer 2
-        s2 = self.s2(x2)
-        t2 = self.t2(x2)
-        x1 = (x1 - t2) * torch.exp(-s2)
-
-        # Inverse Layer 1
-        s1 = self.s1(x1)
-        t1 = self.t1(x1)
-        x2 = (x2 - t1) * torch.exp(-s1)
-
-        return torch.cat([x1, x2], dim=1)
 
 
 class flow(pl.LightningModule):
